@@ -1,24 +1,40 @@
 import sys
 import pygame
 
-player_id = sys.argv[1:5]
+mode = int(sys.argv[1])
+player_id = sys.argv[2:6]
 
 WIDTH, HEIGHT = 1920, 1080
-SCALE_SIZE = 144, 100
+
+if mode == 1:
+    SCALE_SIZE = 192, 125
+else:
+    SCALE_SIZE = 144, 100
 BG_COLOR = (30, 30, 30)
 
 MAP_FILES = []
 INFO_FILES = []
-for i in range(96):
-    MAP_FILES.append("map/"+str((i+1)//10)+str((i+1)%10)+".png")
-    INFO_FILES.append("info/"+str((i+1)//10)+str((i+1)%10)+".png")
-
+if mode == 1:
+    for i in range(6):
+        x = list(map(int, input().split(' ')))
+        for t in x:
+            MAP_FILES.append("map/"+str((t)//10)+str((t)%10)+".png")
+            INFO_FILES.append("info/"+str((t)//10)+str((t)%10)+".png")   
+else:
+    for i in range(96):
+        MAP_FILES.append("map/"+str((i+1)//10)+str((i+1)%10)+".png")
+        INFO_FILES.append("info/"+str((i+1)//10)+str((i+1)%10)+".png")
 
 POSITIONS = []
 
-for i in range(8):
-    for j in range(12):
-        POSITIONS.append((63 + j * 150, 30 + i * 105))
+if mode == 1:
+    for i in range(6):
+        for j in range(8):
+            POSITIONS.append((160 + j * 200, 30 + i * 130))
+else:
+    for i in range(8):
+        for j in range(12):
+            POSITIONS.append((63 + j * 150, 30 + i * 105))
 
 PLAYER_COLORS = [(255, 0, 0, 100), (255, 255, 0, 100), (0, 0, 255, 100), (0, 255, 0, 100)]
 
@@ -182,12 +198,18 @@ while running:
     if stage == 0:
         font = pygame.font.SysFont("simhei", 96)
         text = font.render(" Player "+player_id[current_player % 4]+" Ban ", True, (0,0,0), PLAYER_COLORS[current_player % 4])
-        screen.blit(text, (63,1010))
+        if mode == 1:
+            screen.blit(text, (160,1010))
+        else:
+            screen.blit(text, (63,1010))
         pygame.display.flip()
     if stage == 1:
         font = pygame.font.SysFont("simhei", 96)
         text = font.render(" Player "+player_id[current_player % 4]+" Round "+str(current_player // 4)+" Pick ", True, (0,0,0), PLAYER_COLORS[current_player % 4])
-        screen.blit(text, (63,1010))
+        if mode == 1:
+            screen.blit(text, (160,1010))
+        else:
+            screen.blit(text, (63,1010))
         pygame.display.flip()
     clock.tick(60)
 
